@@ -89,18 +89,20 @@ app.get('/userDetails' , async(req , res)=>{
 })
 
 app.post('/addUser' , verifyToken , async(req , res)=>{
-    const { email , username , number } = req.body;
-    const user = await User.create({email , username , number});
+    const { email , username , phone , name , website } = req.body;
+    const user = await User.create({ email , username , phone , name , website });
     res.json({user});
 })
 
 app.put('/editUser/:id' , verifyToken , async(req , res)=>{
     const { id } = req.params;
-    const { email , username , number } = req.body;
+    const { email , username , number , name , website } = req.body;
     const user = await User.findByPk(id);
     user.email = email;
     user.username = username;
     user.number = number;
+    user.name = name;
+    user.website = website;
     
     await user.save();
 
@@ -126,14 +128,50 @@ sequelize.sync({force : false}).then(() => {
     console.error('Unable to create tables : ', error);
  });
 
-// const usersData = [
-//     { email: 'user1@example.com', username: 'user1', number: '123456789' },
-//     { email: 'user2@example.com', username: 'user2', number: '987654321' },
-//     { email: 'user3@example.com', username: 'user3', number: '987654221' },
-//     { email: 'user4@example.com', username: 'user4', number: '867654321' },
-//     { email: 'user5@example.com', username: 'user5', number: '987602321' },
-//     { email: 'user6@example.com', username: 'user6', number: '787650321' },
-// ];
+//  const usersData = [
+//     {
+//       name: 'John Doe',
+//       email: 'john.doe@example.com',
+//       username: 'johndoe',
+//       phone: '123-456-7890',
+//       website: 'https://johndoe.com',
+//     },
+//     {
+//       name: 'Jane Smith',
+//       email: 'jane.smith@example.com',
+//       username: 'janesmith',
+//       phone: '987-654-3210',
+//       website: 'https://janesmith.com',
+//     },
+//     {
+//       name: 'Alice Johnson',
+//       email: 'alice.johnson@example.com',
+//       username: 'alicejohnson',
+//       phone: '555-123-4567',
+//       website: 'https://alicejohnson.com',
+//     },
+//     {
+//       name: 'Bob Anderson',
+//       email: 'bob.anderson@example.com',
+//       username: 'bobanderson',
+//       phone: '777-888-9999',
+//       website: 'https://bobanderson.com',
+//     },
+//     {
+//       name: 'Eva Williams',
+//       email: 'eva.williams@example.com',
+//       username: 'evawilliams',
+//       phone: '111-222-3333',
+//       website: 'https://evawilliams.com',
+//     },
+//     {
+//       name: 'Michael Brown',
+//       email: 'michael.brown@example.com',
+//       username: 'michaelbrown',
+//       phone: '444-555-6666',
+//       website: 'https://michaelbrown.com',
+//     },
+//   ];
 
 // User.bulkCreate(usersData).then(()=>{
 //     console.log('ok');
